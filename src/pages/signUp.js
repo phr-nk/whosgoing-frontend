@@ -69,7 +69,7 @@ export class signup extends Component {
             confirmPassword : this.state.confirmPassword,
             handle: this.state.handle
         }
-        axios.post('/login', newUserData)
+        axios.post('/signup', newUserData)
         .then( res => {
             console.log(res.data)
             localStorage.setItem('FBIdToken', `Bearer ${res.data.token}`)
@@ -96,7 +96,7 @@ export class signup extends Component {
                 <form noValidate onSubmit={this.handleSubmit}>
                     <TextField id="email" name="email" type="email" label ="Email" className={classes.textField} value={this.state.email} onChange = {this.handleChange} helperText={errors.email} error= {errors.email ? true : false} fullWidth/>
                     <TextField id="password" name="password" type="password" label ="Password" className={classes.textField} value={this.state.password} onChange = {this.handleChange} helperText={errors.password } error= {errors.email ? true : false} fullWidth/>
-                    <TextField id="confirmpassword" name="confirmpassword" type="confirmpassword" label ="Confirm Password" className={classes.textField} value={this.state.confirmpassword} onChange = {this.handleChange} helperText={errors.confirmPassword } error= {errors.confirmPassword ? true : false} fullWidth/>
+                    <TextField id="confirmPassword" name="confirmPassword" type="password" label ="Confirm Password" className={classes.textField} value={this.state.confirmPassword} onChange = {this.handleChange} helperText={errors.confirmPassword } error= {errors.confirmPassword ? true : false} fullWidth/>
                     <TextField id="handle" name="handle" type="handle" label ="Handle" className={classes.textField} value={this.state.handle} onChange = {this.handleChange} helperText={errors.handle } error= {errors.handle ? true : false} fullWidth/>
                    
                     {errors.general && (<Typography variant="body2" className={classes.customError}>

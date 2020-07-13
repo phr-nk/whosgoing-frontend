@@ -35,12 +35,10 @@ const styles = {
         position: 'absolute'
       },
       appImage: {
-          height : 100
-      } 
-
+        height : 100
+    } 
 }
-
-export class login extends Component {
+class login extends Component {
     constructor(){
         super()
         this.state = {
