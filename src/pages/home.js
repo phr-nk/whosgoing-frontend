@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import Grid from "@material-ui/core/Grid"
+import Post from '../components/Post'
+import LinearProgress from '@material-ui/core/LinearProgress';
 export class home extends Component {
     state = {
         posts: null
@@ -17,9 +19,9 @@ export class home extends Component {
         })
     }
     render() {
-        let recentPostMarkup = this.state.posts ? (this.state.posts.map(post => <p>{post.body}</p>)) : <p>Loading</p>
+        let recentPostMarkup = this.state.posts ? (this.state.posts.map(post => <Post key={post.postId} post = {post} ></Post>)) : <LinearProgress></LinearProgress>
         return (
-           <Grid container spacing={16}>
+           <Grid container spacing={10}>
                <Grid item sm={8} xs={12}>
                   {recentPostMarkup}
                </Grid>
