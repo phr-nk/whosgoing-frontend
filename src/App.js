@@ -15,7 +15,9 @@ import signup from './pages/signUp'
 //components
 import NavBar from './components/Navbar'
 import { ThemeProvider as MuiThemeProvider }  from '@material-ui/core/styles';
-
+//redux
+import {Provider} from 'react-redux'
+import store from './redux/reducers/store'
 const theme = createMuiTheme(themeFile)
 const token = localStorage.FBIdToken
 let authenticated
@@ -35,6 +37,7 @@ class App extends React.Component{
 
   return (
     <MuiThemeProvider theme = {theme}>
+    <Provider store={store}>
     <div className="App">
       <Router>
       <NavBar/>
@@ -47,6 +50,7 @@ class App extends React.Component{
         </div>
       </Router>
     </div>
+    </Provider>
     </MuiThemeProvider>
   );
 }
