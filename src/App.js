@@ -8,6 +8,7 @@ import jwtDecode from 'jwt-decode'
 import themeFile from './util/theme'
 import AuthRoute from './util/AuthRoute'
 
+import axios from 'axios';
 //pages
 import home from './pages/home'
 import login from './pages/login'
@@ -18,21 +19,28 @@ import { ThemeProvider as MuiThemeProvider }  from '@material-ui/core/styles';
 //redux
 import {Provider} from 'react-redux'
 import store from './redux/reducers/store'
+import {SET_AUTHENTICATED} from "./redux/reducers/types"
+import { logoutUser, getUserData } from './redux/actions/userAction';
 const theme = createMuiTheme(themeFile)
-const token = localStorage.FBIdToken
-let authenticated
-if(token)
-{
-  const decodedToken = jwtDecode(token)
-  console.log(decodedToken)
-  if(decodedToken.exp * 1000 < Date.now()){
-    window.location.href ='/login'
-  }
-  else {
-    authenticated = true
+const token = localStorage.FBIdToken;
+if (token) {
+  const decodedToken = jwtDecode(token);
+  if (decodedToken.exp * 1000 < Date.now()) {
+    store.dispatch(logoutUser());
+    window.location.href = '/login';
+  } else {
+    store.dispatch({ type: SET_AUTHENTICATED });
+    axios.defaults.headers.common['Authorization'] = token;
+    store.dispatch(getUserData());
   }
 }
 class App extends React.Component{
+
+  componentDidMount()
+  {
+    //clear if there is already token on start
+   //localStorage.clear();
+  }
   render() {
 
   return (
@@ -44,8 +52,8 @@ class App extends React.Component{
         <div className="container">
         <Switch>
           <Route exact path='/' component={home}/>
-          <AuthRoute exact path='/login' component= {login} authenticated = {authenticated}/>
-          <AuthRoute exact path='/signup' component= {signup} authenticated = {authenticated}/>
+          <AuthRoute exact path='/login' component= {login} />
+          <AuthRoute exact path='/signup' component= {signup}/>
         </Switch>
         </div>
       </Router>

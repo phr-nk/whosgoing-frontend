@@ -1,3 +1,6 @@
 .NavBar{
     align-items: center;
 }
+.NavBar svg {
+    color:white;
+}

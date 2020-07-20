@@ -1,36 +1,42 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import PropTypes from 'prop-types'
 import Grid from "@material-ui/core/Grid"
 import Post from '../components/Post'
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Profile from '../components/Profile'
+import {connect} from 'react-redux'
+import {getPosts} from '../redux/actions/dataAction'
 export class home extends Component {
-    state = {
-        posts: null
-    }
+    
     componentDidMount(){
-        axios.get("/posts")
-        .then(res => {
-            this.setState({
-                posts : res.data
-            })
-        })
-        .catch(err => {
-            console.error(err)
-        })
+       this.props.getPosts()
     }
     render() {
-        let recentPostMarkup = this.state.posts ? (this.state.posts.map(post => <Post key={post.postId} post = {post} ></Post>)) : <LinearProgress></LinearProgress>
+        const { posts, loading } = this.props.data;
+        let recentPostsMarkup = !loading ? (
+          posts.map((post) => <Post key={post.postId} post={post} />)
+        ) : (
+          <LinearProgress/>
+        );
         return (
-           <Grid container spacing={10}>
-               <Grid item sm={8} xs={12}>
-                  {recentPostMarkup}
-               </Grid>
-               <Grid item sm={4} xs={12}>
-                   <p>content</p>
-               </Grid>
-           </Grid>
-        )
+          <Grid container spacing={16}>
+            <Grid item sm={8} xs={12}>
+              {recentPostsMarkup}
+            </Grid>
+            <Grid item sm={4} xs={12}>
+              <Profile />
+            </Grid>
+          </Grid>
+        );
+      }
     }
+    
+home.propTypes = {
+    getPosts: PropTypes.func.isRequired,
+    data: PropTypes.object.isRequired
 }
-
-export default home
+const mapStateToProps = (state) => ({
+    data: state.data
+})
+export default connect(mapStateToProps, { getPosts })(home)
