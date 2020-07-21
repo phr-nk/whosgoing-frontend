@@ -9,12 +9,14 @@ import { Link }  from 'react-router-dom'
 import DeletePost from './DeletePost'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import{likePost, unlikePost} from '../redux/actions/dataAction'
-import MyButton from '../util/MyButton'
+import MyButton from '../../util/MyButton'
 import ChatIcon from "@material-ui/icons/Chat"
 import FavIcon from "@material-ui/icons/Favorite"
 import FavBorderIcon from "@material-ui/icons/FavoriteBorder"
+import PostDialog from './PostDialog'
 import {connect} from 'react-redux'
+
+import LikeButton from './LikeButton'
 
 const styles = {
     card :{
@@ -32,37 +34,10 @@ const styles = {
     }
 }
 class Post extends Component {
-    likedPost = () => {
-        if(this.props.user.likes && this.props.user.likes.find((like) => like.postId === this.props.post.postId))
-            return true
-        else 
-            return false
-    }
-    likePost = () => {
-      
-        this.props.likePost(this.props.post.postId)
-    }
-    unlikePost = () => {
-        this.props.unlikePost(this.props.post.postId)
-    }
     render() {
         dayjs.extend(relativeTime)
         const {classes, post : {userImage,body,createdAt,userHandle,postId,likeCount,commentCount}, user : { authenticated, credentials : {handle}}} = this.props
-        const likeButton = !authenticated ? (
-            <Link to="/login">
-              <MyButton tip="Like">
-                <FavBorderIcon color="secondary" />
-              </MyButton>
-            </Link>
-          ) : this.likedPost() ? (
-            <MyButton tip="Undo like" onClick={this.unlikePost}>
-              <FavIcon color="secondary" />
-            </MyButton>
-          ) : (
-            <MyButton tip="Like" onClick={this.likePost}>
-              <FavBorderIcon color="secondary" />
-            </MyButton>
-          );
+       
         const deleteButton = authenticated && userHandle === handle ? (
             <DeletePost postId = {postId} />
         ) : null
@@ -74,20 +49,19 @@ class Post extends Component {
                     <Typography variant="body2"  color ="textSecondary" >{dayjs(createdAt).fromNow()}</Typography>
                     {deleteButton}
                     <Typography variant="body1" >{body}</Typography>
-                    {likeButton}
+                    <LikeButton postId={postId} />
                     <span>{likeCount} Likes </span>
                     <MyButton tip="comments">
                         <ChatIcon color ="secondary"></ChatIcon>
                     </MyButton>
                     <span> {commentCount} comments </span>
+                    <PostDialog postId={postId} userHandle={userHandle}/>
                 </CardContent>
             </Card>
         )
     }
 }
 Post.propTypes = {
-    likePost: PropTypes.func.isRequired,
-    unlikePost: PropTypes.func.isRequired,
     user:PropTypes.object.isRequired,
     post: PropTypes.object.isRequired,
     classes:PropTypes.object.isRequired
@@ -95,8 +69,4 @@ Post.propTypes = {
 const mapStateToProps = state => ({
     user:state.user
 })
-const mapActionToProps = {
-    likePost,
-    unlikePost
-}
-export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(Post))
+export default connect(mapStateToProps)(withStyles(styles)(Post))

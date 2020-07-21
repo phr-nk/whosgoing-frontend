@@ -107,6 +107,7 @@ export const submitComment = (postId, commentData) => (dispatch) => {
     });
 };
 export const deletePost = (postId) => (dispatch) => {
+  console.log()
   axios
     .delete(`/post/${postId}`)
     .then(() => {

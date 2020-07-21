@@ -2,8 +2,8 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import withStyles from '@material-ui/core/styles/withStyles'
-import MyButton from "../util/MyButton"
-import{editUserDetails} from '../redux/actions/userAction'
+import MyButton from "../../util/MyButton"
+
 //nui stuff
 
 import Button from '@material-ui/core/Button'
@@ -14,12 +14,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CircularProgress from '@material-ui/core/CircularProgress'
 //icons
-import EditIcon from '@material-ui/icons/Edit'
+
 import AddIcon from '@material-ui/icons/Add'
 import CloseIcon from '@material-ui/icons/Close'
 //redux
 import {connect} from 'react-redux'
-import {postPost} from '../redux/actions/dataAction'
+import {postPost,clearErrors} from '../../redux/actions/dataAction'
 
 const styles = theme => ( {
         
@@ -39,29 +39,42 @@ const styles = theme => ( {
 class PostPost extends Component{
     state = {
         open : false,
-        body: '',
+        body: "",
         errors: {}
     }
     componentWillReceiveProps(nextProps) {
-        if(nextProps.UI.errors)
-        {
+        if (nextProps.UI.errors) {
             this.setState({
-                errors:nextProps.UI.errors
-            })
-        }
+              errors: nextProps.UI.errors
+            });
+          }
+          if (!nextProps.UI.errors && !nextProps.UI.loading) {
+            this.setState({ body: '', open: false, errors: {} });
+          }
     }
     handleOpen = () => {
         this.setState({open : true})
     }
     handleClose = () => {
-        this.setState({open : false})
+        this.props.clearErrors()
+        this.setState({open : false, errors : {} } )
     }
     handleChange = (event) => {
         this.setState({[event.target.name] : event.target.value})
     }
     handleSubmit = (event) => {
         event.preventDefault()
-        this.props.postPost({body : this.state.body})
+        
+        if(this.state.body === '')
+        {
+            this.setState({errors : { body : 'Write something!'}})
+            
+            return
+        }
+        else 
+        {
+            this.props.postPost({body : this.state.body}) 
+        }
     }
     render() {
         const {errors} = this.state
@@ -69,7 +82,7 @@ class PostPost extends Component{
         return (
             <Fragment>
                 <MyButton onClick={this.handleOpen} tip="Make a post!">
-                    <AddIcon></AddIcon>
+                    <AddIcon color="secondary"></AddIcon>
                 </MyButton>
                 <Dialog open = {this.state.open} onClose={this.handleClose} fullWidth maxWidth="sm">
                     <MyButton tip="Close" onClick={this.handleClose} btnClassName={classes.closeButton}>
@@ -78,7 +91,7 @@ class PostPost extends Component{
                 <DialogTitle>Make a new Post</DialogTitle>
                 <DialogContent>
                     <form onSubmit={this.handleSubmit}>
-                        <TextField name="body" type="text" label="POST" multiline rows="3" placeholder ="make a post" error={errors.body ? true : false} helperText={errors.body} className={classes.TextField} onChange={this.handChange} fullWidth/>
+                        <TextField name="body" type="text" label="post something" multiline rows="3" placeholder ="make a post" error={errors.body ? true : false} helperText={errors.body} className={classes.TextField} onChange={this.handleChange} fullWidth/>
                         <Button type="submit" variant="contained" color="secondary" className={classes.submitButton} disabled={loading}>
                             Sumbit
                            {loading && ( <CircularProgress className={classes.progressSpinner}/>)}
@@ -93,9 +106,10 @@ class PostPost extends Component{
 
 PostPost.propTypes = {
     postPost: PropTypes.func.isRequired,
+    clearErrors: PropTypes.func.isRequired,
     UI: PropTypes.object.isRequired
 }
 const mapStateToProps = (state) => ({
     UI: state.UI
 })
-export default connect(mapStateToProps, {postPost})(withStyles(styles)(PostPost))
+export default connect(mapStateToProps, {postPost, clearErrors})(withStyles(styles)(PostPost))

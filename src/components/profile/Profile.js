@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import dayjs from 'dayjs'
 import EditDetails from './EditDetails'
-import MyButton from "../util/MyButton"
+import MyButton from "../../util/MyButton"
 //MUI 
 import MUILink from "@material-ui/core/Link"
 import Button from '@material-ui/core/Button'
@@ -18,7 +18,7 @@ import LocationOn from "@material-ui/icons/LocationOn"
 import LinkIcon from "@material-ui/icons/Link"
 import CalendarToday from "@material-ui/icons/CalendarToday"
 import KeyboardReturn from "@material-ui/icons/KeyboardReturn"
-import {uploadImage,logoutUser} from '../redux/actions/userAction'
+import {uploadImage,logoutUser} from '../../redux/actions/userAction'
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 const styles = {

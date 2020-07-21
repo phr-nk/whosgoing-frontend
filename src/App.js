@@ -14,7 +14,7 @@ import home from './pages/home'
 import login from './pages/login'
 import signup from './pages/signUp'
 //components
-import NavBar from './components/Navbar'
+import NavBar from './components/layout/Navbar'
 import { ThemeProvider as MuiThemeProvider }  from '@material-ui/core/styles';
 //redux
 import {Provider} from 'react-redux'

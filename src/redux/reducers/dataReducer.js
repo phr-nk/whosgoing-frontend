@@ -46,10 +46,10 @@ import {
           ...state
         };
       case DELETE_POST:
-        index = state.posts.findIndex(
+        let i = state.posts.findIndex(
           (post) => post.postId === action.payload
         );
-        state.posts.splice(index, 1);
+        state.posts.splice(i, 1);
         return {
           ...state
         };
