@@ -3,7 +3,7 @@ import axios from 'axios'
 export const loginUser = (userData,history) => (dispatch) => {
     dispatch({ type: LOADING_UI });
      axios
-    .post('/login', userData)
+    .post('https://us-central1-whosgoing-ce730.cloudfunctions.net/api/login', userData)
     .then((res) => {
       setAuthorizationHeader(res.data.token);
       dispatch(getUserData());
@@ -27,7 +27,7 @@ export const logoutUser = () => (dispatch) => {
 //action 
 export const getUserData = () => (dispatch) => {
     dispatch ({type: LOADING_USER})
-    axios.get('/user')
+    axios.get('https://us-central1-whosgoing-ce730.cloudfunctions.net/api/user')
     .then(res => {
         dispatch({
             type :SET_USER,
@@ -39,7 +39,7 @@ export const getUserData = () => (dispatch) => {
 
 export const uploadImage = (formData) => (dispatch) =>{
   dispatch({type : LOADING_USER})
-  axios.post('/user/image',formData)
+  axios.post('https://us-central1-whosgoing-ce730.cloudfunctions.net/api/user/image',formData)
   .then(res => {
     dispatch(getUserData())
   })
@@ -49,7 +49,7 @@ export const uploadImage = (formData) => (dispatch) =>{
 export const editUserDetails = (userDetails) => (dispatch) => {
   dispatch({ type: LOADING_USER });
   axios
-    .post('/user', userDetails)
+    .post('https://us-central1-whosgoing-ce730.cloudfunctions.net/api/user', userDetails)
     .then(() => {
       dispatch(getUserData());
     })

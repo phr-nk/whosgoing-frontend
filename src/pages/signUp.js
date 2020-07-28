@@ -69,7 +69,7 @@ export class signup extends Component {
             confirmPassword : this.state.confirmPassword,
             handle: this.state.handle
         }
-        axios.post('/signup', newUserData)
+        axios.post('https://us-central1-whosgoing-ce730.cloudfunctions.net/api/signup', newUserData)
         .then( res => {
             console.log(res.data)
             localStorage.setItem('FBIdToken', `Bearer ${res.data.token}`)

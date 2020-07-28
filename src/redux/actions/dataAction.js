@@ -18,7 +18,7 @@ import {
 export const getPosts = () => (dispatch) => {
   dispatch({ type: LOADING_DATA });
   axios
-    .get('/posts')
+    .get('https://us-central1-whosgoing-ce730.cloudfunctions.net/api/posts')
     .then((res) => {
       dispatch({
         type: SET_POSTS,
@@ -35,7 +35,7 @@ export const getPosts = () => (dispatch) => {
 export const getPost = (postId) => (dispatch) => {
   dispatch({ type: LOADING_UI });
   axios
-    .get(`/post/${postId}`)
+    .get(`https://us-central1-whosgoing-ce730.cloudfunctions.net/api/post/${postId}`)
     .then((res) => {
       dispatch({
         type: SET_POST,
@@ -49,7 +49,7 @@ export const getPost = (postId) => (dispatch) => {
 export const postPost = (newPost) => (dispatch) => {
   dispatch({ type: LOADING_UI });
   axios
-    .post('/post', newPost)
+    .post('https://us-central1-whosgoing-ce730.cloudfunctions.net/api/post', newPost)
     .then((res) => {
       dispatch({
         type: POST_POST,
@@ -67,7 +67,7 @@ export const postPost = (newPost) => (dispatch) => {
 // Like a post
 export const likePost = (postId) => (dispatch) => {
   axios
-    .get(`/post/${postId}/like`)
+    .get(`https://us-central1-whosgoing-ce730.cloudfunctions.net/api/post/${postId}/like`)
     .then((res) => {
       dispatch({
         type: LIKE_POST,
@@ -79,7 +79,7 @@ export const likePost = (postId) => (dispatch) => {
 // Unlike a post
 export const unlikePost = (postId) => (dispatch) => {
   axios
-    .get(`/post/${postId}/unlike`)
+    .get(`https://us-central1-whosgoing-ce730.cloudfunctions.net/api/post/${postId}/unlike`)
     .then((res) => {
       dispatch({
         type: UNLIKE_POST,
@@ -91,7 +91,7 @@ export const unlikePost = (postId) => (dispatch) => {
 // Submit a comment
 export const submitComment = (postId, commentData) => (dispatch) => {
   axios
-    .post(`/post/${postId}/comment`, commentData)
+    .post(`https://us-central1-whosgoing-ce730.cloudfunctions.net/api/post/${postId}/comment`, commentData)
     .then((res) => {
       dispatch({
         type: SUBMIT_COMMENT,
@@ -109,7 +109,7 @@ export const submitComment = (postId, commentData) => (dispatch) => {
 export const deletePost = (postId) => (dispatch) => {
   console.log()
   axios
-    .delete(`/post/${postId}`)
+    .delete(`https://us-central1-whosgoing-ce730.cloudfunctions.net/api/post/${postId}`)
     .then(() => {
       dispatch({ type: DELETE_POST, payload: postId });
     })
@@ -119,7 +119,7 @@ export const deletePost = (postId) => (dispatch) => {
 export const getUserData = (userHandle) => (dispatch) => {
   dispatch({ type: LOADING_DATA });
   axios
-    .get(`/user/${userHandle}`)
+    .get(`https://us-central1-whosgoing-ce730.cloudfunctions.net/api/user/${userHandle}`)
     .then((res) => {
       dispatch({
         type: SET_POSTS,
