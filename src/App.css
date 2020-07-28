@@ -1,17 +1,33 @@
-.container{
-  margin: 80px auto 0 auto;
-  max-width: 70vw;
+.container {
+  margin: 90px auto 200px auto;
+  max-width: 80vw;
 }
-.NavBar{
+.NavBar {
+  display: flex;
   margin: auto;
 }
-
-body {
-  background-color: lightyellow
+.footer {
+  position: fixed;
+  bottom: -40px;
+  width: 100%;
+  text-align: center;
+  margin-top: -50px;
+  z-index: -2;
 }
-a{
+.footerText {
+  position: fixed;
+  bottom: -20px;
+  width: 100%;
+  text-align: center;
+  font-size: x-large;
+  flex-grow: 1;
+  z-index: -1;
+}
+body {
+  background-color: lightyellow;
+}
+a {
   text-decoration: none;
-
 }
 @keyframes App-logo-spin {
   from {
@@ -22,7 +38,6 @@ a{
   }
 }
 
-h1{
-  margin-top:3rem;
+h1 {
+  margin-top: 3rem;
 }
-
