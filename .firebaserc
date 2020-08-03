@@ -1,0 +1,17 @@
+{
+  "projects": {
+    "default": "whosgoing-ce730"
+  },
+  "targets": {
+    "whosgoing-ce730": {
+      "hosting": {
+        "whosgoing": [
+          "whosgoing"
+        ],
+        "whosgoing-ce730": [
+          "whosgoing"
+        ]
+      }
+    }
+  }
+}

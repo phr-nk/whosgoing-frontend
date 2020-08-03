@@ -1,45 +1,47 @@
 import {
-    SET_POSTS,
-    LOADING_DATA,
-    LIKE_POST,
-    UNLIKE_POST,
-    DELETE_POST,
-    SET_ERRORS,
-    POST_POST,
-    CLEAR_ERRORS,
-    LOADING_UI,
-    SET_POST,
-    STOP_LOADING_UI,
-    SUBMIT_COMMENT,
-  } from '../reducers/types';
-  import axios from 'axios';
+  SET_POSTS,
+  LOADING_DATA,
+  LIKE_POST,
+  UNLIKE_POST,
+  DELETE_POST,
+  SET_ERRORS,
+  POST_POST,
+  CLEAR_ERRORS,
+  LOADING_UI,
+  SET_POST,
+  STOP_LOADING_UI,
+  SUBMIT_COMMENT,
+} from "../reducers/types";
+import axios from "axios";
 
-  // Get all POSTS
+// Get all POSTS
 export const getPosts = () => (dispatch) => {
   dispatch({ type: LOADING_DATA });
   axios
-    .get('/posts')
+    .get("https://us-central1-whosgoing-ce730.cloudfunctions.net/api/posts")
     .then((res) => {
       dispatch({
         type: SET_POSTS,
-        payload: res.data
+        payload: res.data,
       });
     })
     .catch((err) => {
       dispatch({
         type: SET_POSTS,
-        payload: []
+        payload: [],
       });
     });
 };
 export const getPost = (postId) => (dispatch) => {
   dispatch({ type: LOADING_UI });
   axios
-    .get(`/post/${postId}`)
+    .get(
+      `https://us-central1-whosgoing-ce730.cloudfunctions.net/api/post/${postId}`
+    )
     .then((res) => {
       dispatch({
         type: SET_POST,
-        payload: res.data
+        payload: res.data,
       });
       dispatch({ type: STOP_LOADING_UI });
     })
@@ -49,29 +51,34 @@ export const getPost = (postId) => (dispatch) => {
 export const postPost = (newPost) => (dispatch) => {
   dispatch({ type: LOADING_UI });
   axios
-    .post('/post', newPost)
+    .post(
+      "https://us-central1-whosgoing-ce730.cloudfunctions.net/api/post",
+      newPost
+    )
     .then((res) => {
       dispatch({
         type: POST_POST,
-        payload: res.data
+        payload: res.data,
       });
       dispatch(clearErrors());
     })
     .catch((err) => {
       dispatch({
         type: SET_ERRORS,
-        payload: err.response.data
+        payload: err.response.data,
       });
     });
 };
 // Like a post
 export const likePost = (postId) => (dispatch) => {
   axios
-    .get(`/post/${postId}/like`)
+    .get(
+      `https://us-central1-whosgoing-ce730.cloudfunctions.net/api/post/${postId}/like`
+    )
     .then((res) => {
       dispatch({
         type: LIKE_POST,
-        payload: res.data
+        payload: res.data,
       });
     })
     .catch((err) => console.log(err));
@@ -79,11 +86,13 @@ export const likePost = (postId) => (dispatch) => {
 // Unlike a post
 export const unlikePost = (postId) => (dispatch) => {
   axios
-    .get(`/post/${postId}/unlike`)
+    .get(
+      `https://us-central1-whosgoing-ce730.cloudfunctions.net/api/post/${postId}/unlike`
+    )
     .then((res) => {
       dispatch({
         type: UNLIKE_POST,
-        payload: res.data
+        payload: res.data,
       });
     })
     .catch((err) => console.log(err));
@@ -91,25 +100,30 @@ export const unlikePost = (postId) => (dispatch) => {
 // Submit a comment
 export const submitComment = (postId, commentData) => (dispatch) => {
   axios
-    .post(`/post/${postId}/comment`, commentData)
+    .post(
+      `https://us-central1-whosgoing-ce730.cloudfunctions.net/api/post/${postId}/comment`,
+      commentData
+    )
     .then((res) => {
       dispatch({
         type: SUBMIT_COMMENT,
-        payload: res.data
+        payload: res.data,
       });
       dispatch(clearErrors());
     })
     .catch((err) => {
       dispatch({
         type: SET_ERRORS,
-        payload: err.response.data
+        payload: err.response.data,
       });
     });
 };
 export const deletePost = (postId) => (dispatch) => {
-  console.log()
+  console.log();
   axios
-    .delete(`/post/${postId}`)
+    .delete(
+      `https://us-central1-whosgoing-ce730.cloudfunctions.net/api/post/${postId}`
+    )
     .then(() => {
       dispatch({ type: DELETE_POST, payload: postId });
     })
@@ -119,17 +133,19 @@ export const deletePost = (postId) => (dispatch) => {
 export const getUserData = (userHandle) => (dispatch) => {
   dispatch({ type: LOADING_DATA });
   axios
-    .get(`/user/${userHandle}`)
+    .get(
+      `https://us-central1-whosgoing-ce730.cloudfunctions.net/api/user/${userHandle}`
+    )
     .then((res) => {
       dispatch({
         type: SET_POSTS,
-        payload: res.data.posts
+        payload: res.data.posts,
       });
     })
     .catch(() => {
       dispatch({
         type: SET_POSTS,
-        payload: null
+        payload: null,
       });
     });
 };

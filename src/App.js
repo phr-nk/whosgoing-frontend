@@ -13,6 +13,7 @@ import axios from "axios";
 import home from "./pages/home";
 import login from "./pages/login";
 import signup from "./pages/signUp";
+import user from "./pages/user";
 //components
 import NavBar from "./components/layout/Navbar";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
@@ -47,6 +48,7 @@ class App extends React.Component {
                   <Route exact path="/" component={home} />
                   <AuthRoute exact path="/login" component={login} />
                   <AuthRoute exact path="/signup" component={signup} />
+                  <Route exact path="/users/:handle" component={user} />
                 </Switch>
               </div>
             </Router>
