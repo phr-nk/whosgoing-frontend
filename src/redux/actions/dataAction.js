@@ -11,14 +11,54 @@ import {
   SET_POST,
   STOP_LOADING_UI,
   SUBMIT_COMMENT,
+  SET_EVENTS,
+  SET_CITY,
 } from "../reducers/types";
 import axios from "axios";
 
+//get city
+export const getCity = (cityString) => (dispatch) => {
+  dispatch({ type: LOADING_DATA });
+  axios
+    .get(
+      `https://api.songkick.com/api/3.0/search/locations.json?query=${cityString}&apikey=${api}`
+    )
+    .then((res) => {
+      console.log(res);
+      dispatch({
+        type: SET_CITY,
+        payload: res.data.resultsPage.results.location[0],
+      });
+    })
+    .catch((err) => {
+      dispatch({ type: STOP_LOADING_UI });
+    });
+};
+//get events
+export const getEvents = (metroId) => (dispatch) => {
+  dispatch({ type: LOADING_DATA });
+  axios
+    .get(
+      `https://api.songkick.com/api/3.0/metro_areas/${metroId}/calendar.json?per_page=8&apikey=${api}`
+    )
+    .then((res) => {
+      dispatch({
+        type: SET_EVENTS,
+        payload: res.data.resultsPage.results.event,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: SET_EVENTS,
+        payload: [],
+      });
+    });
+};
 // Get all POSTS
 export const getPosts = () => (dispatch) => {
   dispatch({ type: LOADING_DATA });
   axios
-    .get("https://us-central1-whosgoing-ce730.cloudfunctions.net/api/posts")
+    .get("/posts")
     .then((res) => {
       dispatch({
         type: SET_POSTS,
@@ -35,9 +75,7 @@ export const getPosts = () => (dispatch) => {
 export const getPost = (postId) => (dispatch) => {
   dispatch({ type: LOADING_UI });
   axios
-    .get(
-      `https://us-central1-whosgoing-ce730.cloudfunctions.net/api/post/${postId}`
-    )
+    .get(`/post/${postId}`)
     .then((res) => {
       dispatch({
         type: SET_POST,
@@ -51,10 +89,7 @@ export const getPost = (postId) => (dispatch) => {
 export const postPost = (newPost) => (dispatch) => {
   dispatch({ type: LOADING_UI });
   axios
-    .post(
-      "https://us-central1-whosgoing-ce730.cloudfunctions.net/api/post",
-      newPost
-    )
+    .post("/post", newPost)
     .then((res) => {
       dispatch({
         type: POST_POST,
@@ -72,9 +107,7 @@ export const postPost = (newPost) => (dispatch) => {
 // Like a post
 export const likePost = (postId) => (dispatch) => {
   axios
-    .get(
-      `https://us-central1-whosgoing-ce730.cloudfunctions.net/api/post/${postId}/like`
-    )
+    .get(`/post/${postId}/like`)
     .then((res) => {
       dispatch({
         type: LIKE_POST,
@@ -86,9 +119,7 @@ export const likePost = (postId) => (dispatch) => {
 // Unlike a post
 export const unlikePost = (postId) => (dispatch) => {
   axios
-    .get(
-      `https://us-central1-whosgoing-ce730.cloudfunctions.net/api/post/${postId}/unlike`
-    )
+    .get(`/post/${postId}/unlike`)
     .then((res) => {
       dispatch({
         type: UNLIKE_POST,
@@ -100,10 +131,7 @@ export const unlikePost = (postId) => (dispatch) => {
 // Submit a comment
 export const submitComment = (postId, commentData) => (dispatch) => {
   axios
-    .post(
-      `https://us-central1-whosgoing-ce730.cloudfunctions.net/api/post/${postId}/comment`,
-      commentData
-    )
+    .post(`/post/${postId}/comment`, commentData)
     .then((res) => {
       dispatch({
         type: SUBMIT_COMMENT,
@@ -121,9 +149,7 @@ export const submitComment = (postId, commentData) => (dispatch) => {
 export const deletePost = (postId) => (dispatch) => {
   console.log();
   axios
-    .delete(
-      `https://us-central1-whosgoing-ce730.cloudfunctions.net/api/post/${postId}`
-    )
+    .delete(`/post/${postId}`)
     .then(() => {
       dispatch({ type: DELETE_POST, payload: postId });
     })
@@ -133,9 +159,7 @@ export const deletePost = (postId) => (dispatch) => {
 export const getUserData = (userHandle) => (dispatch) => {
   dispatch({ type: LOADING_DATA });
   axios
-    .get(
-      `https://us-central1-whosgoing-ce730.cloudfunctions.net/api/user/${userHandle}`
-    )
+    .get(`/user/${userHandle}`)
     .then((res) => {
       dispatch({
         type: SET_POSTS,

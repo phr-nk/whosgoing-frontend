@@ -6,15 +6,13 @@ import {
   LOADING_USER,
   SET_AUTHENTICATED,
   SET_UNAUTHENTICATED,
+  MARK_NOTIFICATIONS_READ,
 } from "../reducers/types";
 import axios from "axios";
 export const loginUser = (userData, history) => (dispatch) => {
   dispatch({ type: LOADING_UI });
   axios
-    .post(
-      "https://us-central1-whosgoing-ce730.cloudfunctions.net/api/login",
-      userData
-    )
+    .post("/login", userData)
     .then((res) => {
       setAuthorizationHeader(res.data.token);
       dispatch(getUserData());
@@ -32,10 +30,7 @@ export const loginUser = (userData, history) => (dispatch) => {
 export const signupUser = (newUserData, history) => (dispatch) => {
   dispatch({ type: LOADING_UI });
   axios
-    .post(
-      "https://us-central1-whosgoing-ce730.cloudfunctions.net/api/signup",
-      newUserData
-    )
+    .post("/signup", newUserData)
     .then((res) => {
       setAuthorizationHeader(res.data.token);
       dispatch(getUserData());
@@ -60,7 +55,7 @@ export const logoutUser = () => (dispatch) => {
 export const getUserData = () => (dispatch) => {
   dispatch({ type: LOADING_USER });
   axios
-    .get("https://us-central1-whosgoing-ce730.cloudfunctions.net/api/user")
+    .get("/user")
     .then((res) => {
       dispatch({
         type: SET_USER,
@@ -73,10 +68,7 @@ export const getUserData = () => (dispatch) => {
 export const uploadImage = (formData) => (dispatch) => {
   dispatch({ type: LOADING_USER });
   axios
-    .post(
-      "https://us-central1-whosgoing-ce730.cloudfunctions.net/api/user/image",
-      formData
-    )
+    .post("/user/image", formData)
     .then((res) => {
       dispatch(getUserData());
     })
@@ -86,12 +78,19 @@ export const uploadImage = (formData) => (dispatch) => {
 export const editUserDetails = (userDetails) => (dispatch) => {
   dispatch({ type: LOADING_USER });
   axios
-    .post(
-      "https://us-central1-whosgoing-ce730.cloudfunctions.net/api/user",
-      userDetails
-    )
+    .post("/user", userDetails)
     .then(() => {
       dispatch(getUserData());
+    })
+    .catch((err) => console.log(err));
+};
+export const markNotificationsRead = (notificationIds) => (dispatch) => {
+  axios
+    .post(`/notifications`, notificationIds)
+    .then((res) => {
+      dispatch({
+        type: MARK_NOTIFICATIONS_READ,
+      });
     })
     .catch((err) => console.log(err));
 };

@@ -12,7 +12,7 @@ import Button from "@material-ui/core/Button";
 import BannerImage from "../../images/bannertext.png";
 
 import HomeIcon from "@material-ui/icons/Home";
-import Notifications from "@material-ui/icons/Notifications";
+import Notifications from "./Notifications";
 import { isAbsolute } from "path";
 import AuthRoute from "../../util/AuthRoute";
 
@@ -40,9 +40,7 @@ export class Navbar extends Component {
                   <HomeIcon color="secondary" />
                 </MyButton>
               </Link>
-              <MyButton tip="Notifications">
-                <Notifications color="secondary" />
-              </MyButton>
+              <Notifications />
             </Fragment>
           ) : (
             <Fragment>

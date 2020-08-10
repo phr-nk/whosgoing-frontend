@@ -22,6 +22,9 @@ import { Provider } from "react-redux";
 import store from "./redux/reducers/store";
 import { SET_AUTHENTICATED } from "./redux/reducers/types";
 import { logoutUser, getUserData } from "./redux/actions/userAction";
+
+axios.defaults.baseURL =
+  "https://us-central1-whosgoing-ce730.cloudfunctions.net/api";
 const theme = createMuiTheme(themeFile);
 const token = localStorage.FBIdToken;
 if (token) {
@@ -49,6 +52,11 @@ class App extends React.Component {
                   <AuthRoute exact path="/login" component={login} />
                   <AuthRoute exact path="/signup" component={signup} />
                   <Route exact path="/users/:handle" component={user} />
+                  <Route
+                    exact
+                    path="/users/:handle/post/:postId"
+                    component={user}
+                  />
                 </Switch>
               </div>
             </Router>
