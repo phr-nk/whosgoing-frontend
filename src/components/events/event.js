@@ -32,10 +32,9 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     width: "20vw",
-
     marginBottom: 20,
-    marginLeft: "auto",
-    marginRight: "auto",
+  
+    marginRight: 20,
     height: 300,
   },
   image: {

@@ -19,39 +19,46 @@ var cityDefault = 9426; //chicago
 export class home extends Component {
   state = {
     city: cityDefault,
+    loaded: false
   };
   componentDidMount() {
-    this.props.getPosts();
+    
+    this.props.getPosts()
+    this.props.getEvents(this.props.data.city);
 
-    this.props.getEvents(this.state.city);
   }
-  componentWillMount() {}
+  fetchNewEvents = (city) => {
+    this.props.getCity(city)
+  
+  }
   render() {
-    const { posts, loading, events } = this.props.data;
+    const { posts, loading, events, city } = this.props.data;
     const {
       user: {
         authenticated,
         credentials: { location },
       },
     } = this.props;
-
+  
     let recentPostsMarkup = !loading ? (
       posts.map((post) => <Post key={post.postId} post={post} />)
     ) : (
       <LinearProgress />
     );
 
-    let eventsMarkup = !loading ? (
-      events.map((event) => <Event event={event} />)
+    let eventsMarkup = !loading && authenticated ? (
+    events.map((event) => <Event event={event} /> )
     ) : (
       <LinearProgress />
     );
-
+    console.log(this.props)
+    
     return (
       <Fragment>
+        <p>City: {location} </p>
         <Grid
           container
-          style={{ width: "85vw", margin: "auto" }}
+          style={{ marginLeft: -25, width: '90vw' }}
           spacing={0}
           alignItems={"center"}
         >

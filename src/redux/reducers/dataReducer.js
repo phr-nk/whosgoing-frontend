@@ -12,7 +12,7 @@ import {
 } from "./types";
 
 const initialState = {
-  city: {},
+  city: 9426,
   posts: [],
   events: [],
   event: {},

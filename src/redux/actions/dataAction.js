@@ -24,10 +24,10 @@ export const getCity = (cityString) => (dispatch) => {
       `https://api.songkick.com/api/3.0/search/locations.json?query=${cityString}&apikey=${api}`
     )
     .then((res) => {
-      console.log(res);
+ 
       dispatch({
         type: SET_CITY,
-        payload: res.data.resultsPage.results.location[0],
+        payload: res.data.resultsPage.results.location[0].metroArea.id,
       });
     })
     .catch((err) => {
