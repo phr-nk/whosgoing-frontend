@@ -33,7 +33,7 @@ const styles = {
     flexDirection: "column",
     width: "20vw",
     marginBottom: 20,
-  
+
     marginRight: 20,
     height: 300,
   },
@@ -81,13 +81,14 @@ class Event extends Component {
             <Typography
               variant="body1
             "
+              color={"textPrimary"}
             >
               {displayName}
             </Typography>
           </a>
         </CardContent>
         <CardActions disableSpacing>
-          <MyButton tip="Who's going" className={classes.icon}>
+          <MyButton tip="Who's going?" className={classes.icon}>
             <SupervisorAccountIcon color="secondary"></SupervisorAccountIcon>
           </MyButton>
         </CardActions>

@@ -19,18 +19,15 @@ var cityDefault = 9426; //chicago
 export class home extends Component {
   state = {
     city: cityDefault,
-    loaded: false
+    loaded: false,
   };
   componentDidMount() {
-    
-    this.props.getPosts()
-    this.props.getEvents(this.props.data.city);
-
+    this.props.getPosts();
   }
   fetchNewEvents = (city) => {
-    this.props.getCity(city)
-  
-  }
+    this.props.getCity(city);
+    this.setState({ city: this.props.data.city });
+  };
   render() {
     const { posts, loading, events, city } = this.props.data;
     const {
@@ -39,26 +36,28 @@ export class home extends Component {
         credentials: { location },
       },
     } = this.props;
-  
+
     let recentPostsMarkup = !loading ? (
       posts.map((post) => <Post key={post.postId} post={post} />)
     ) : (
       <LinearProgress />
     );
 
-    let eventsMarkup = !loading && authenticated ? (
-    events.map((event) => <Event event={event} /> )
-    ) : (
-      <LinearProgress />
-    );
-    console.log(this.props)
-    
+    let eventsMarkup =
+      !loading && authenticated ? (
+        events.map((event) => <Event event={event} />)
+      ) : (
+        <LinearProgress />
+      );
+
     return (
       <Fragment>
-        <p>City: {location} </p>
+        <p>
+          <b>Upcoming Concerts in {location} </b>
+        </p>
         <Grid
           container
-          style={{ marginLeft: -25, width: '90vw' }}
+          style={{ marginLeft: -25, width: "90vw" }}
           spacing={0}
           alignItems={"center"}
         >
@@ -79,8 +78,6 @@ export class home extends Component {
 
 home.propTypes = {
   getPosts: PropTypes.func.isRequired,
-  getEvents: PropTypes.func.isRequired,
-  getCity: PropTypes.func.isRequired,
   getGetUserData: PropTypes.func.isRequired,
   data: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
@@ -91,7 +88,4 @@ const mapStateToProps = (state) => ({
 });
 export default connect(mapStateToProps, {
   getPosts,
-  getEvents,
-  getCity,
-  getUserData,
 })(home);

@@ -19,6 +19,7 @@ import LinkIcon from "@material-ui/icons/Link";
 import CalendarToday from "@material-ui/icons/CalendarToday";
 import KeyboardReturn from "@material-ui/icons/KeyboardReturn";
 import { uploadImage, logoutUser } from "../../redux/actions/userAction";
+import { getCity, getEvents } from "../../redux/actions/dataAction";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
 const styles = {
@@ -69,6 +70,11 @@ const styles = {
   },
 };
 class Profile extends Component {
+  state = {
+    fetched: false,
+    initalCity: this.props.data.city,
+  };
+  componentDidMount() {}
   handleImageChange = (event) => {
     const image = event.target.files[0];
     //send to server
@@ -76,6 +82,7 @@ class Profile extends Component {
     formData.append("image", image, image.name);
     this.props.uploadImage(formData);
   };
+  handleLocationChange = () => {};
   handleEditPicture = () => {
     const fileInput = document.getElementById("imageInput");
     fileInput.click();
@@ -83,15 +90,29 @@ class Profile extends Component {
   handleLogout = () => {
     this.props.logoutUser();
   };
+
   render() {
     const {
       classes,
+      data: { city },
       user: {
         credentials: { handle, createdAt, imageUrl, bio, website, location },
         loading,
         authenticated,
       },
     } = this.props;
+    if (!loading && authenticated && this.state.fetched === false) {
+      if (location !== undefined) {
+        this.props.getCity(location);
+        this.setState({ fetched: true });
+      } else {
+        this.setState({ fetched: true });
+      }
+    }
+    if (this.state.initalCity !== city && this.state.fetched === true) {
+      this.props.getEvents(city);
+      this.setState({ initalCity: city });
+    }
     let profileMarkUp = !loading ? (
       authenticated ? (
         <Paper className={classes.paper}>
@@ -183,13 +204,17 @@ class Profile extends Component {
 }
 const mapStateToProps = (state) => ({
   user: state.user,
+  data: state.data,
 });
-const mapActionsToProps = { logoutUser, uploadImage };
+const mapActionsToProps = { logoutUser, uploadImage, getCity, getEvents };
 Profile.propTypes = {
   user: PropTypes.object.isRequired,
+  data: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
   logoutUser: PropTypes.func.isRequired,
   uploadImage: PropTypes.func.isRequired,
+  getCity: PropTypes.func.isRequired,
+  getEvents: PropTypes.func.isRequired,
 };
 export default connect(
   mapStateToProps,
